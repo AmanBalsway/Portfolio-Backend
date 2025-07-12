@@ -1,6 +1,7 @@
 import { v2 as cloudinary } from 'cloudinary';
 import dotenv from 'dotenv';
 import fs from 'fs';
+import path from 'path';
 
 dotenv.config();
 
@@ -12,13 +13,20 @@ cloudinary.config({
 
 export const uploadToCloudinary = async (localPath, folder) => {
   try {
-    const result = await cloudinary.uploader.upload(localPath, { folder });
-    fs.unlinkSync(localPath); // remove temp file
+    const ext = path.extname(localPath).toLowerCase();
+    const isDocument = ['.pdf', '.doc', '.docx'].includes(ext);
+    const resourceType = isDocument ? 'raw' : 'image';
+
+    const result = await cloudinary.uploader.upload(localPath, {
+      folder,
+      resource_type: resourceType,
+    });
+
+    fs.unlinkSync(localPath);
     return result;
   } catch (err) {
-    fs.unlinkSync(localPath);
+    if (fs.existsSync(localPath)) fs.unlinkSync(localPath);
     throw err;
   }
 };
-
 export default cloudinary;
