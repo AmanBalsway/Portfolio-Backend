@@ -10,6 +10,7 @@ import testimonialRoutes from './routes/testimonialRoutes.js';
 import resumeRoutes from './routes/resumeRoutes.js';
 import contactRoutes from "./routes/contactRoutes.js";
 import analyticsRoutes from "./routes/analytics.js";
+import certificateRoutes from "./routes/certificateRoutes.js";
 
 dotenv.config();           // Load .env config
 console.clear();           // Clear console for clean startup
@@ -28,6 +29,7 @@ app.use('/api/testimonials', testimonialRoutes);
 app.use('/api/resume', resumeRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/analytics", analyticsRoutes);
+app.use("/api/certificates", certificateRoutes);
 
 // Default route
 app.get("/", (req, res) => {

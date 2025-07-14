@@ -37,8 +37,6 @@ import { uploadToCloudinary } from "../utils/cloudinary.js";
 //   }
 // };
 export const uploadProject = async (req, res) => {
-  console.log("✅ File received:", req.file); // Confirm the Cloudinary file
-  console.log("📦 Body Data:", req.body);
 
   try {
     const { title, description, technologies, githubLink, liveLink } = req.body;

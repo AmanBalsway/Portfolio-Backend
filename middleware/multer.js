@@ -13,29 +13,64 @@ const imageStorage = new CloudinaryStorage({
 export const uploadImage = multer({ storage: imageStorage });
 
 // Resume uploader
-const resumeStorage = new CloudinaryStorage({
+// const resumeStorage = new CloudinaryStorage({
   
+//   cloudinary,
+//   params: async (req, file) => {
+//     const ext = file.originalname.split('.').pop().toLowerCase(); // get extension and convert to lower case
+//     const baseName = file.originalname.replace(/\.[^/.]+$/, ''); // remove extension
+//     // Validate file type
+//     const allowedFormats = ['pdf', 'doc', 'docx'];
+//     if (!allowedFormats.includes(ext)) {
+//       throw new Error('Invalid file type. Only PDF, DOC, and DOCX are allowed.');
+//     }
+//     return {
+//       folder: 'Portfolio/Resume',
+//       public_id: baseName,            // keep original filename
+//       format: ext,                    // set the correct format
+//       resource_type: 'raw',           // required for PDF/DOC
+//       use_filename: true,
+//       unique_filename: true,
+//       overwrite: true,
+//     };
+//   },
+// });
+
+const resumeStorage = new CloudinaryStorage({
   cloudinary,
   params: async (req, file) => {
-    const ext = file.originalname.split('.').pop().toLowerCase(); // get extension and convert to lower case
-    const baseName = file.originalname.replace(/\.[^/.]+$/, ''); // remove extension
-    // Validate file type
+    const ext = file.originalname.split('.').pop().toLowerCase();
+    const baseName = file.originalname.replace(/\.[^/.]+$/, '');
+
     const allowedFormats = ['pdf', 'doc', 'docx'];
     if (!allowedFormats.includes(ext)) {
       throw new Error('Invalid file type. Only PDF, DOC, and DOCX are allowed.');
     }
+
     return {
       folder: 'Portfolio/Resume',
-      public_id: baseName,            // keep original filename
-      format: ext,                    // set the correct format
-      resource_type: 'raw',           // required for PDF/DOC
+      public_id: baseName,
+      format: ext,
+      resource_type: 'raw', // ✅ CHANGED
       use_filename: true,
       unique_filename: true,
       overwrite: true,
+      access_mode: "public"
     };
   },
 });
 
 
-
 export const uploadResumeFile = multer({ storage: resumeStorage });
+
+
+const certificateStorage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: 'Portfolio/Certificates',
+    allowed_formats: ['jpg', 'jpeg', 'png'],
+  },
+});
+
+export const uploadCertificateFile = multer({ storage: certificateStorage }); // ✅ Export with different name
+
